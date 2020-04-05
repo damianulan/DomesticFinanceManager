@@ -1,0 +1,147 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:WpfApp1.SubControls" x:Class="WpfApp1.SubControls.ReceiptViewControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="496" d:DesignWidth="1015" Foreground="#eee">
+    <Grid Background="#222">
+        <Grid HorizontalAlignment="Left" Height="279" Margin="20,12,0,0" VerticalAlignment="Top" Width="300">
+            <ListBox
+  IsEnabled="{Binding IsChecked, ElementName=EnableListBox}" Margin="133,0,0,0" Cursor="Hand">
+                <TextBlock><Run Text="Plain"/></TextBlock>
+                <TextBlock><Run Text="Old"/></TextBlock>
+                <TextBlock><Run Text="ListBox"/></TextBlock>
+                <TextBlock><Run Text="Full of junk"/></TextBlock>
+            </ListBox>
+            <ComboBox x:Name="CategoryBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Margin="10,15,0,0"
+                materialDesign:HintAssist.Hint="Category"
+                IsEditable="False"
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <ComboBoxItem
+    IsSelected="True">
+                    All
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Groceries
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Blabla
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Orange
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="MonthBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Margin="10,69,0,0"
+                materialDesign:HintAssist.Hint="Month"
+                IsEditable="False"
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <ComboBoxItem
+    IsSelected="True">
+                    All
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    January
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    February
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    March
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    April
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    May
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    June
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    July
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    August
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    September
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    October
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    November
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    December
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="YearBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Margin="10,125,0,0"
+                materialDesign:HintAssist.Hint="Year"
+                IsEditable="False"
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <ComboBoxItem
+                    IsSelected="True" Content="All"/>
+                <ComboBoxItem Content="Groceries"/>
+                <ComboBoxItem Content="Blabla"/>
+                <ComboBoxItem Content="Orange"/>
+            </ComboBox>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="190" Margin="20,296,0,0" VerticalAlignment="Top" Width="300">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <local:ExpensesToMonth HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="300" Margin="0,30,0,0"/>
+            <Label x:Name="label" Content="Last 4 months" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe UI Light"/>
+        </Grid>
+        <Label x:Name="label1" Content="Date:" HorizontalAlignment="Left" Margin="416,46,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="18"/>
+        <Label x:Name="label1_Copy" Content="Total:" HorizontalAlignment="Left" Margin="417,93,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="18"/>
+        <Label x:Name="label1_Copy1" Content="Discount:" HorizontalAlignment="Left" Margin="401,132,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="14"/>
+        <Label x:Name="RepeatenceLabel" Content="Repeat every:" HorizontalAlignment="Left" Margin="756,100,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="14"/>
+        <ComboBox
+            x:Name="RepeatanceBox"
+            IsEditable="False"
+            Margin="849,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="69" SelectedIndex="0" TabIndex="5">
+            <ComboBoxItem Content="Day"/>
+            <ComboBoxItem Content="Week"/>
+            <ComboBoxItem Content="Month"/>
+            <ComboBoxItem Content="Year"/>
+        </ComboBox>
+        <ListView x:Name="ProductView" Foreground="#eee" Margin="401,231,10.2,10" Background="{x:Null}" TabIndex="11">
+            <ListView.BindingGroup>
+                <BindingGroup/>
+            </ListView.BindingGroup>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding No}"
+                        Header="No" Width="50"/>
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding Quantity}"
+                        Header="Quantity" Width="90"/>
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding Name}"
+                        Header="Name" Width="190"/>
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding Category}"
+                        Header="Category" Width="120"/>
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding Price}"                    
+                        Header="Price" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate/>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label x:Name="DetailsLabel" Content="Details" HorizontalAlignment="Left" Margin="401,199,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="18"/>
+        <Label x:Name="DateLabel" Content="Date:" HorizontalAlignment="Left" Margin="468,46,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="18"/>
+        <Label x:Name="TotalLabel" Content="Date:" HorizontalAlignment="Left" Margin="468,93,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="18"/>
+        <Label x:Name="DiscountLabel" Content="Discount:" HorizontalAlignment="Left" Margin="468,132,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="14"/>
+        <Label x:Name="label1_Copy7" Content="Discount:" HorizontalAlignment="Left" Margin="401,17,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light"/>
+    </Grid>
+</UserControl>

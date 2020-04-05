@@ -1,0 +1,23 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp1"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Tools="clr-namespace:WpfApp1.Tools" xmlns:SubControls="clr-namespace:WpfApp1.SubControls" x:Class="WpfApp1.ReceiptControl"
+             mc:Ignorable="d" Width="1015" Height="559" Foreground="#eee" Background="#222"
+             >
+    <Grid>
+        <Grid Margin="0,0,0,500" HorizontalAlignment="Right" Width="1015">
+            <Label x:Name="TitleLabel" Content="// EXPENSES" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Foreground="#FFEEEEEE" ForceCursor="True" FontSize="24" FontWeight="Light"/>
+            <Grid Margin="196,0,0,0.2">
+                <Tools:InlineNavButton x:Name="ViewBtn" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" IconKind="ViewAgendaOutline" Text="View" MouseDown="ViewBtn_MouseDown"/>
+                <Tools:InlineNavButton x:Name="AddBtn" HorizontalAlignment="Left" Height="40" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" IconKind="Add" Text="Add" MouseDown="AddBtn_MouseDown"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="GridMain" Margin="0,64,0.2,0" HorizontalAlignment="Right" Width="1015" Height="495" VerticalAlignment="Top">
+            <SubControls:ReceiptViewControl HorizontalAlignment="Left" Height="495" VerticalAlignment="Top" Width="1015"/>
+        </Grid>
+    </Grid>
+</UserControl>
