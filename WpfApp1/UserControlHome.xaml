@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WpfApp1"
              mc:Ignorable="d" Width="1015" Height="559" Foreground="#eee" Background="#222"
              >
@@ -10,6 +11,13 @@
         <Grid Margin="0,0,0,500" HorizontalAlignment="Right" Width="1015">
             <Label x:Name="TitleLabel" Content="// DASHBOARD" HorizontalAlignment="Right" Margin="0,0,829,9.2" VerticalAlignment="Bottom" Foreground="#FFEEEEEE" ForceCursor="True" FontSize="24" FontWeight="Light"/>
         </Grid>
-        <Grid Margin="0,64,0.2,-4.8" HorizontalAlignment="Right" Width="1015"/>
+        <Grid Margin="0,64,0.2,-4.8" HorizontalAlignment="Right" Width="1015">
+            <Image x:Name="image" HorizontalAlignment="Left" Height="112" Margin="444,163,0,0" VerticalAlignment="Top" Width="118" Source="SubControls/logo_colour_favicon.png" RenderTransformOrigin="0.424,0.538"/>
+            <Label x:Name="label" Content="Hello, User!" HorizontalAlignment="Left" Margin="17,6,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="24"/>
+            <Label x:Name="label_Copy" Content="Welcome to" HorizontalAlignment="Left" Margin="444,108,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="24"/>
+            <Label x:Name="label_Copy1" Content="DOMESTIC FINANCE MANAGER" HorizontalAlignment="Left" Margin="381,284,0,0" VerticalAlignment="Top" FontSize="18"/>
+            <Label x:Name="label_Copy2" Content="In order to start use left hand side menu" HorizontalAlignment="Left" Margin="371,335,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="16"/>
+
+        </Grid>
     </Grid>
 </UserControl>

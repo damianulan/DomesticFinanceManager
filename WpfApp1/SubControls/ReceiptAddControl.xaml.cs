@@ -28,6 +28,11 @@ namespace WpfApp1.SubControls
         private static readonly List<int> CategoryIds = new List<int>();
         private static readonly List<int> MarketIds = new List<int>();
 
+        private decimal PricePattern = 0; // needed for determining either user proceed with any changes
+        // regarding PriceBox control. See InsertUpdateProduct() void method
+        // introduced with value at ProductName_SelectionChanged(..)
+
+
         public ReceiptAddControl()
         {
             InitializeComponent();
@@ -50,20 +55,24 @@ namespace WpfApp1.SubControls
             index++;
             TitleLabel.Content = "new order #" + index.ToString();
 
+
             // Populating CategoryBox
-            SqlDataReader dr1 = Database.Select("SELECT * FROM Category ORDER BY id_category;");
+            SqlDataReader dr1 = Database.Select("SELECT id_category, name, expand FROM Category ORDER BY id_category;");
             while (dr1.Read())
             {
                 CategoryIds.Add(Convert.ToInt32(dr1["id_category"]));
-                CategoryBox.Items.Add(dr1["name"].ToString());
                 Expandity.Add(Convert.ToInt32(dr1["expand"]));
+                CategoryBox.Items.Add(dr1["name"].ToString());
             }
-            SqlDataReader dr2 = Database.Select("SELECT * FROM Market ORDER BY id_market;");
+
+            // Populating MarketTextBox
+            SqlDataReader dr2 = Database.Select("SELECT id_market, name FROM Market ORDER BY id_market;");
             while (dr2.Read())
             {
                 MarketIds.Add(Convert.ToInt32(dr2["id_market"]));
                 MarketTextBox.Items.Add(dr2["name"].ToString());
             }
+
             CategoryBox.SelectedIndex = 0;
             MarketTextBox.SelectedIndex = 0;
         }
@@ -153,33 +162,45 @@ namespace WpfApp1.SubControls
                 ExpenseTitle.Visibility = Visibility.Visible;
             }
         }
-        
+
+        private void MarketTextBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetDefaulValues();
+            // Populating Product Names
+            ProductNamePopulator();
+        }
+
         private void InsertUpdateProduct()
         {
-            // CHECKING IF NECESSARY TO INSERT DATA
+            // CHECKING IF NECESSARY TO INSERT PRICE DATA
             SqlDataReader dr = Database.Select("SELECT * FROM Product WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " AND name LIKE '" + ProductName.Text + "';");
             if (!dr.HasRows)
             {
-                string query = "INSERT INTO Product ([name], [market_id], [category_id], [price], [date]) " +
-    "VALUES('" + ProductName.Text + "', '" + MarketIds[MarketTextBox.SelectedIndex] + "', '" + CategoryIds[CategoryBox.SelectedIndex] + "', '" + PriceBox.Text + "', '" + DateTime.Now.ToString() + "');";
+                string query = "INSERT INTO Product ([name], [market_id], [category_id], [date]) " +
+    "VALUES('" + ProductName.Text + "', '" + MarketIds[MarketTextBox.SelectedIndex] + "', '" + CategoryIds[CategoryBox.SelectedIndex] + "', '" + DateTime.Now.ToString() + "');";
                 Database.ExecSQL(query);
+                InsertPriceToDB("SELECT TOP 1 Id_product FROM Product ORDER BY Id_product DESC;");
             }
-            // CHECKING IF NECESSARY TO UDPATE DATA
+            // CHECKING IF NECESSARY TO UDPATE PRICE DATA
             else
             {
-                decimal priceDB = 0;
-                decimal priceAP;
-                SqlDataReader dr1 = Database.Select("SELECT TOP 1 price FROM Product WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " AND name LIKE '" + ProductName.Text + "';");
-                while(dr1.Read())
-                    priceDB = Convert.ToDecimal(dr1["price"].ToString());
-                priceAP = Convert.ToDecimal(PriceBox.Text);
-                if (priceAP != priceDB)
-                {
-                    string query = "UPDATE Product SET [price] = " + priceAP.ToString() + " WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " AND name LIKE '" + ProductName.Text + "';";
-                    Database.ExecSQL(query);
-                }
+                decimal mirror = Convert.ToDecimal(PriceBox.Text);
+                if (mirror != PricePattern)
+                    InsertPriceToDB("SELECT TOP 1 Id_product FROM Product WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " AND name LIKE '" + ProductName.Text + "';");
             }
 
+        }
+
+        private void InsertPriceToDB(string select)
+        {
+            SqlDataReader dr1 = Database.Select(select);
+            while (dr1.Read())
+            {
+                int id = Convert.ToInt32(dr1["Id_product"]);
+                string query = "INSERT INTO Price ([value], [date], [product_id]) " +
+    "VALUES('" + PriceBox.Text + "', '" + DateTime.Now + "', '" + id + "');";
+                Database.ExecSQL(query);
+            }
         }
 
         private void UpdateTotalPrice()
@@ -208,9 +229,10 @@ namespace WpfApp1.SubControls
             {
                 if(ProductName.SelectedIndex > -1)
                 {
-                    SqlDataReader dr1 = Database.Select("SELECT price FROM Product WHERE name LIKE '" + ProductName.SelectedItem.ToString() + "' AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + ";");
+                    SqlDataReader dr1 = Database.Select("SELECT TOP 1 Price.value FROM Price JOIN Product ON Price.product_id = Product.Id_product WHERE Product.name LIKE '" + ProductName.SelectedItem.ToString() + "' AND Product.market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " ORDER BY Price.date DESC;");
                     while (dr1.Read())
-                        PriceBox.Text = dr1["price"].ToString();
+                        PriceBox.Text = dr1["value"].ToString();
+                    PricePattern = Convert.ToDecimal(PriceBox.Text);
                 }
 
             }
@@ -312,12 +334,15 @@ namespace WpfApp1.SubControls
 
         private void ProductNamePopulator()
         {
-            if (ProductName.HasItems)
-                ProductName.Items.Clear();
-            SqlDataReader dr = Database.Select("SELECT name FROM Product WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " ORDER BY id_product;"); 
-            while (dr.Read())
-                ProductName.Items.Add(dr["name"].ToString());
 
+            if(MarketTextBox.SelectedIndex > -1)
+            {
+                if (ProductName.HasItems)
+                    ProductName.Items.Clear();
+                SqlDataReader dr = Database.Select("SELECT name FROM Product WHERE category_id=" + CategoryIds[CategoryBox.SelectedIndex] + " AND market_id=" + MarketIds[MarketTextBox.SelectedIndex] + " ORDER BY id_product;");
+                while (dr.Read())
+                    ProductName.Items.Add(dr["name"].ToString());
+            }
 
         }
 
@@ -346,12 +371,12 @@ namespace WpfApp1.SubControls
             DateOfReceipt.SelectedDate = null;
             CategoryBox.SelectedIndex = 0;
             CategoryBox.IsEnabled = true;
-            ExpenseTitle = null;
+            ExpenseTitle.Text = "";
             DiscountBox.Text = "";
-            PriceBox = null;
+            PriceBox.Text = "";
             MarketTextBox.SelectedIndex = 0;
             MarketTextBox.IsEnabled = true;
-            ProductName = null;
+            ProductName.Text = "";
             TotalBox.Text = "";
             QuantityBox.Text = "1";
 

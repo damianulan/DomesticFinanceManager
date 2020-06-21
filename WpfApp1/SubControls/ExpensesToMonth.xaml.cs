@@ -103,7 +103,7 @@ namespace WpfApp1.SubControls
             DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
+        public SeriesCollection SeriesCollection { get; }
         public string[] Labels { get; set; }
         public Func<decimal, string> YFormatter { get; set; }
 

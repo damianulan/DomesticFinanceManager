@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\damia\source\repos\WpfApp1\WpfApp1\App.xaml
-12881225781
+12-766555195
 2-1995130054
-19-985430993
-19689450259
-MainWindow.xaml;ProductsControl.xaml;ReceiptControl.xaml;SettingsControl.xaml;StatisticsControl.xaml;SubControls\ExpensesToDateChart.xaml;SubControls\ExpensesToMonth.xaml;SubControls\ReceiptAddControl.xaml;SubControls\ReceiptViewControl.xaml;Tools\IconButton.xaml;Tools\InlineNavButton.xaml;UserControlHome.xaml;
+19-716616235
+127554423451
+MainWindow.xaml;ProductsControl.xaml;ReceiptControl.xaml;SettingsControl.xaml;StatisticsControl.xaml;SubControls\ExpensesToMonth.xaml;SubControls\ProductsChart.xaml;SubControls\ReceiptAddControl.xaml;SubControls\ReceiptViewControl.xaml;Tools\IconButton.xaml;Tools\InlineNavButton.xaml;UserControlHome.xaml;
 
 False
 

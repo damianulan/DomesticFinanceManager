@@ -13,26 +13,11 @@ namespace WpfApp1
     {
 
         public static SqlConnection GetDBConnection()
-
         {
             string cn_String = Properties.Settings.Default.ConnectionString;
-
             SqlConnection cn_connection = new SqlConnection(cn_String);
-            
             if (cn_connection.State != ConnectionState.Open) cn_connection.Open();
             return cn_connection;
-        }
-
-        public static DataTable GetDataTable(string SQLText)
-
-        {
-            SqlConnection cn_connection = GetDBConnection();
-
-            DataTable table = new DataTable();
-
-            SqlDataAdapter adapter = new SqlDataAdapter(SQLText, cn_connection);
-            adapter.Fill(table);
-            return table;
         }
 
         public static SqlDataReader Select(string query)

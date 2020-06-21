@@ -92,18 +92,6 @@
                             <TextBlock Text="Products" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem x:Name="StatisticsControl" Height="60" Cursor="Hand">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ChartArc" Height="25" Width="25" Margin="12.5, 10"/>
-                            <TextBlock Text="Statistics" VerticalAlignment="Center"  Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem x:Name="SettingsControl" Height="60" Cursor="Hand">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Settings" Height="25" Width="25" Margin="12.5, 10"/>
-                            <TextBlock Text="Settings" VerticalAlignment="Center"  Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
                 </ListView>
             </StackPanel>
         </Grid>
